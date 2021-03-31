@@ -8,6 +8,7 @@ import (
 
 	"github.com/layer5io/meshery-adapter-library/adapter"
 	"github.com/layer5io/meshery-adapter-library/status"
+	"github.com/layer5io/meshery-istio/internal/config"
 	"github.com/layer5io/meshkit/utils"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -54,7 +55,12 @@ func (istio *Istio) patchWithEnvoyFilter(namespace string, del bool, app string,
 	}
 
 	for _, template := range templates {
-		contents, err := readFileSource(string(template))
+		generatedTemplatePath, err := config.GenerateImagehubTemplate(template)
+		if err != nil {
+			return st, ErrEnvoyFilter(err)
+		}
+
+		contents, err := readFileSource(string(generatedTemplatePath))
 		if err != nil {
 			return st, ErrEnvoyFilter(err)
 		}
