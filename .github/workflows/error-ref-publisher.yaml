@@ -31,6 +31,6 @@ jobs:
           cd ./meshery
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ./docs_data/errorref/istio_errors_export.json
+          git add ./docs/_data/errorref/istio_errors_export.json
           git commit -m "[Docs] meshery-istio error codes reference"
           git push origin master
