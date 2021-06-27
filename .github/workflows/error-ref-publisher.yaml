@@ -22,7 +22,7 @@ jobs:
       - name: Update docs
         uses: actions/checkout@v2
         with:
-          repository: 'layer5io/meshery'
+          repository: 'DelusionalOptimist/meshery'
           path: 'meshery'
       - run: |
           go run github.com/layer5io/meshkit/cmd/errorutil -d . update --skip-dirs meshery
