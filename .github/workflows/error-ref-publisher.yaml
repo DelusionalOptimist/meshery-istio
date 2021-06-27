@@ -16,20 +16,19 @@ jobs:
         with:
           go-version: ${{ secrets.GO_VERSION }}
 
-      - name: Update docs
+      - name: Checkout meshery
         uses: actions/checkout@v2
         with:
           repository: 'DelusionalOptimist/meshery'
           token: ${{ secrets.PAT }}
           path: 'meshery'
 
-      - run: |
+      - name: Update and push docs
+        run: |
           go run github.com/layer5io/meshkit/cmd/errorutil -d . update --skip-dirs meshery
           echo '{ "errors_export": '$(cat errorutil_errors_export.json)' }' | jq > ./meshery/docs/_data/errorref/istio_errors_export.json
 
           cd ./meshery
-          git config user.name DelusionalOptimist
-          git config user.email rudrakshpareek3601@gmail.com
           git add ./docs/_data/errorref/istio_errors_export.json
-          git commit -m "[Docs] update error reference for istio"
+          git commit -m "[Docs] update error reference for istio adapter" --author="l5io <ci@layer5.io>" --sign-off
           git push origin master
