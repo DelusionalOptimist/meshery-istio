@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - 'err-ref-ci'
-    paths-ignore:
-      - 'docs/**'
-      - 'mesheryctl/**'
 
 jobs:
   error-ref:
@@ -25,13 +22,23 @@ jobs:
           repository: 'DelusionalOptimist/meshery'
           token: ${{ secrets.PAT }}
           path: 'meshery'
-      - run: |
-          go run github.com/layer5io/meshkit/cmd/errorutil -d . update --skip-dirs meshery
-          echo '{ "errors_export": '$(cat errorutil_errors_export.json)' }' | jq > ./meshery/docs/_data/errorref/istio_errors_export.json
 
-          cd ./meshery
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add ./docs/_data/errorref/istio_errors_export.json
-          git commit -m "[Docs] meshery-istio error codes reference"
-          git push origin master
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_user_name: l5io
+          commit_user_email: ci@layer5io
+          commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit_message: "[Docs] update meshery server error reference"
+          repository: './meshery'
+
+          #      - run: |
+          #          go run github.com/layer5io/meshkit/cmd/errorutil -d . update --skip-dirs meshery
+          #          echo '{ "errors_export": '$(cat errorutil_errors_export.json)' }' | jq > ./meshery/docs/_data/errorref/istio_errors_export.json
+          #
+          #          cd ./meshery
+          #          git config user.name l5io
+          #          git config user.email ci@layer5.io
+          #          git add ./docs/_data/errorref/istio_errors_export.json
+          #          git commit -m "[Docs] meshery-istio error codes reference"
+          #          git push origin master
