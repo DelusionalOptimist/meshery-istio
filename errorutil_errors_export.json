@@ -1,0 +1,222 @@
+{
+  "component_name": "Istio",
+  "component_type": "adapter",
+  "errors": {
+    "1000": {
+      "name": "ErrGetLatestReleasesCode",
+      "code": "1024",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1001": {
+      "name": "ErrGetLatestReleaseNamesCode",
+      "code": "1025",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1002": {
+      "name": "ErrInstallIstioCode",
+      "code": "1026",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1003": {
+      "name": "ErrUnzipFileCode",
+      "code": "1027",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1004": {
+      "name": "ErrTarXZFCode",
+      "code": "1028",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1005": {
+      "name": "ErrMeshConfigCode",
+      "code": "1029",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1006": {
+      "name": "ErrRunIstioCtlCmdCode",
+      "code": "1030",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1007": {
+      "name": "ErrDownloadBinaryCode",
+      "code": "1031",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1008": {
+      "name": "ErrInstallBinaryCode",
+      "code": "1032",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1009": {
+      "name": "ErrSampleAppCode",
+      "code": "1033",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1010": {
+      "name": "ErrEnvoyFilterCode",
+      "code": "1034",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1011": {
+      "name": "ErrApplyPolicyCode",
+      "code": "1035",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1012": {
+      "name": "ErrCustomOperationCode",
+      "code": "1036",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1013": {
+      "name": "ErrAddonFromTemplateCode",
+      "code": "1037",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1014": {
+      "name": "ErrAddonInvalidConfigCode",
+      "code": "1038",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1015": {
+      "name": "ErrCreatingIstioClientCode",
+      "code": "1039",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1016": {
+      "name": "ErrIstioVetSyncCode",
+      "code": "1040",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1017": {
+      "name": "ErrIstioVetCode",
+      "code": "1041",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1018": {
+      "name": "ErrParseOAMComponentCode",
+      "code": "1042",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1019": {
+      "name": "ErrParseOAMConfigCode",
+      "code": "1043",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1020": {
+      "name": "ErrNilClientCode",
+      "code": "1044",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1021": {
+      "name": "ErrParseIstioCoreComponentCode",
+      "code": "1045",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "1022": {
+      "name": "ErrInvalidOAMComponentTypeCode",
+      "code": "1046",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    },
+    "11300": {
+      "name": "ErrEmptyConfigCode",
+      "code": "1023",
+      "severity": "",
+      "long_description": "",
+      "short_description": "",
+      "probable_cause": "",
+      "suggested_remediation": ""
+    }
+  }
+}

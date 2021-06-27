@@ -12,87 +12,87 @@ var (
 
 	// ErrInstallIstioCode represents the errors which are generated
 	// during istio service mesh install process
-	ErrInstallIstioCode = "istio_test_code"
+	ErrInstallIstioCode = "1026"
 
 	// ErrUnzipFileCode represents the errors which are generated
 	// during unzip process
-	ErrUnzipFileCode = "istio_test_code"
+	ErrUnzipFileCode = "1027"
 
 	// ErrTarXZFCode represents the errors which are generated
 	// during decompressing and extracting tar.gz file
-	ErrTarXZFCode = "istio_test_code"
+	ErrTarXZFCode = "1028"
 
 	// ErrMeshConfigCode represents the errors which are generated
 	// when an invalid mesh config is found
-	ErrMeshConfigCode = "istio_test_code"
+	ErrMeshConfigCode = "1029"
 
 	// ErrRunIstioCtlCmdCode represents the errors which are generated
 	// during fetch manifest process
-	ErrRunIstioCtlCmdCode = "istio_test_code"
+	ErrRunIstioCtlCmdCode = "1030"
 
 	// ErrDownloadBinaryCode represents the errors which are generated
 	// during binary download process
-	ErrDownloadBinaryCode = "istio_test_code"
+	ErrDownloadBinaryCode = "1031"
 
 	// ErrInstallBinaryCode represents the errors which are generated
 	// during binary installation process
-	ErrInstallBinaryCode = "istio_test_code"
+	ErrInstallBinaryCode = "1032"
 
 	// ErrSampleAppCode represents the errors which are generated
 	// duing sample app installation
-	ErrSampleAppCode = "istio_test_code"
+	ErrSampleAppCode = "1033"
 
 	// ErrEnvoyFilterCode represents the errors which are generated
 	// duing envoy filter patching
-	ErrEnvoyFilterCode = "istio_test_code"
+	ErrEnvoyFilterCode = "1034"
 
 	// ErrApplyPolicyCode represents the errors which are generated
 	// duing policy apply operation
-	ErrApplyPolicyCode = "istio_test_code"
+	ErrApplyPolicyCode = "1035"
 
 	// ErrCustomOperationCode represents the errors which are generated
 	// when an invalid addon operation is requested
-	ErrCustomOperationCode = "istio_test_code"
+	ErrCustomOperationCode = "1036"
 
 	// ErrAddonFromTemplateCode represents the errors which are generated
 	// during addon deployment process
-	ErrAddonFromTemplateCode = "istio_test_code"
+	ErrAddonFromTemplateCode = "1037"
 
 	// ErrAddonInvalidConfigCode represents the errors which are generated
 	// when an invalid addon operation is requested
-	ErrAddonInvalidConfigCode = "istio_test_code"
+	ErrAddonInvalidConfigCode = "1038"
 
 	// ErrCreatingIstioClientCode represents the errors which are generated
 	// during creating istio client process
-	ErrCreatingIstioClientCode = "istio_test_code"
+	ErrCreatingIstioClientCode = "1039"
 
 	// ErrIstioVetSyncCode represents the errors which are generated
 	// during istio-vet sync process
-	ErrIstioVetSyncCode = "istio_test_code"
+	ErrIstioVetSyncCode = "1040"
 
 	// ErrIstioVetCode represents the errors which are generated
 	// during istio-vet process
-	ErrIstioVetCode = "istio_test_code"
+	ErrIstioVetCode = "1041"
 
 	// ErrParseOAMComponentCode represents the error code which is
 	// generated during the OAM component parsing
-	ErrParseOAMComponentCode = "istio_test_code"
+	ErrParseOAMComponentCode = "1042"
 
 	// ErrParseOAMConfigCode represents the error code which is
 	// generated during the OAM configuration parsing
-	ErrParseOAMConfigCode = "istio_test_code"
+	ErrParseOAMConfigCode = "1043"
 
 	// ErrNilClientCode represents the error code which is
 	// generated when kubernetes client is nil
-	ErrNilClientCode = "istio_test_code"
+	ErrNilClientCode = "1044"
 
 	// ErrParseIstioCoreComponentCode represents the error code which is
 	// generated when istio core component manifest parsing fails
-	ErrParseIstioCoreComponentCode = "istio_test_code"
+	ErrParseIstioCoreComponentCode = "1045"
 
 	// ErrInvalidOAMComponentTypeCode represents the error code which is
 	// generated when an invalid oam component is requested
-	ErrInvalidOAMComponentTypeCode = "istio_test_code"
+	ErrInvalidOAMComponentTypeCode = "1046"
 
 	// ErrOpInvalid represents the errors which are generated
 	// when an invalid operation is requested

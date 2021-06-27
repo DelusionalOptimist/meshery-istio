@@ -1,0 +1,44 @@
+{
+  "min_code": 1023,
+  "max_code": 1046,
+  "duplicate_codes": {},
+  "duplicate_names": [],
+  "call_expr_codes": [
+    "ErrEmptyConfig",
+    "ErrOpInvalid",
+    "ErrParseOAMComponent",
+    "ErrParseOAMConfig",
+    "ErrNilClient"
+  ],
+  "int_codes": [
+    1040,
+    1046,
+    1036,
+    1035,
+    1026,
+    1025,
+    1027,
+    1028,
+    1029,
+    1030,
+    1033,
+    1034,
+    1023,
+    1038,
+    1039,
+    1042,
+    1043,
+    1044,
+    1037,
+    1031,
+    1032,
+    1041,
+    1045,
+    1024
+  ],
+  "deprecated_new_default": [
+    "internal/config/error.go",
+    "istio/error.go",
+    "istio/oam.go"
+  ]
+}

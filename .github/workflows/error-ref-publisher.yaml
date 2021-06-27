@@ -28,8 +28,6 @@ jobs:
           go run github.com/layer5io/meshkit/cmd/errorutil -d . update --skip-dirs meshery
           echo '{ "errors_export": '$(cat errorutil_errors_export.json)' }' | jq > ./meshery/docs/_data/errorref/istio_errors_export.json
 
-      - name: Commit changes
-        run: |
           cd ./meshery
           git config user.name github-actions
           git config user.email github-actions@github.com
