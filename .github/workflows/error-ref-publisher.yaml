@@ -28,8 +28,8 @@ jobs:
           echo '{ "errors_export": '$(cat errorutil_errors_export.json)' }' | jq > ./meshery/docs/_data/errorref/istio_errors_export.json
 
           cd ./meshery
-          git config user.name l5io
-          git config user.email ci@layer5.io
+          git config user.name DelusionalOptimist
+          git config user.email rudrakshpareek3601@gmail.com
           git add ./docs/_data/errorref/istio_errors_export.json
           git commit -m "[Docs] update error reference for istio"
           git push origin master
