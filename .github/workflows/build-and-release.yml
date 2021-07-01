@@ -25,22 +25,21 @@ jobs:
         eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
         istioctl manifest generate > ~/istio.yml
 
-#name: Install extra stuff
-#run: |
-#curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#nvm install v14.15.3
-#nvm install-latest-npm
-#npm i
-#npm i nexe -g
-#make linux
+    - name: Install extra stuff
+      run: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        nvm install v14.15.3
+        nvm install-latest-npm
+        git clone https://github.com/layer5io/kubeopenapi-jsonschema util
+        cd util
+        npm i; npm i nexe -g
+        make linux
 
     - name: Generate JSONschema
       # no need to build it once binaries for kubeopenapi-jsonschema are released
       run: |
-        curl -LO https://github.com/DelusionalOptimist/kubeopenapi-jsonschema/releases/download/v0.1.0/kubeopenapi-jsonschema
-        chmod +x ./kubeopenapi-jsonschema
         ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=="EnvoyFilter")]..openAPIV3Schema.properties.spec' -o yaml --o-filter '$[0]'
     - run: GOPROXY=direct GOSUMDB=off GO111MODULE=on go build .
   docker:
