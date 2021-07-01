@@ -20,6 +20,18 @@ jobs:
       uses: actions/setup-go@v1
       with:
         go-version: ${{ secrets.GO_VERSION }}
+    - name: Generate Manifests
+      run: |
+        eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
+        istioctl manifest generate > ~/istio.yml
+    - name: Generate JSONschema
+      # no need to build it once binaries for kubeopenapi-jsonschema are released
+      run: |
+        nvm install v14.15.3
+        npm i
+        npm i nexe -g
+        make linux
+        ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=="EnvoyFilter")]..openAPIV3Schema.properties.spec' -o yaml --o-filter '$[0]'
     - run: GOPROXY=direct GOSUMDB=off GO111MODULE=on go build .
   docker:
     name: Docker build and push
