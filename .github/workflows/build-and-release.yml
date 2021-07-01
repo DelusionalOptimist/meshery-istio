@@ -40,6 +40,7 @@ jobs:
     - name: Generate JSONschema
       # no need to build it once binaries for kubeopenapi-jsonschema are released
       run: |
+        cd util
         ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=="EnvoyFilter")]..openAPIV3Schema.properties.spec' -o yaml --o-filter '$[0]'
     - run: GOPROXY=direct GOSUMDB=off GO111MODULE=on go build .
   docker:
