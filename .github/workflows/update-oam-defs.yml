@@ -1,0 +1,63 @@
+name: Meshery-istio OAM
+on:
+  push:
+    branches:
+      - 'gen-oam'
+
+jobs:
+  oam:
+    name: Generate and push OAM definitions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      - name: Get Kuma manifests
+        run: |
+          eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
+          istioctl manifest generate > ~/istio.yml
+
+      - name: Bulild jsonschema util
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          nvm install v14.15.3
+          nvm install-latest-npm
+          git clone https://github.com/layer5io/kubeopenapi-jsonschema util
+          cd util
+          npm i; npm i nexe -g
+          make linux
+
+      - name: Generate Workload definitions
+        run: |
+          cd util
+          template='{"apiVersion":"core.oam.dev/v1alpha1","kind":"WorkloadDefinition","metadata":{"name":""},"spec":{"definitionRef":{"name":""}}}'
+
+          crds=$(./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition")]' -o json --o-filter '$..["spec"]["names"]["kind"]' | jq '.[]')
+
+          for t in ${crds[@]}; do
+
+            name=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
+            definitionRef=$name.meshery.layer5.io
+
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --kubernetes -o json --o-filter "$[$idx]" | jq '.[]' > ../templates/oam/$(printf %s.meshery.layer5io.schema.json $name)
+
+            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/$(printf %s_definition.json $name)
+
+          done
+
+      - name: Cleanup
+        run: |
+          rm -rf util kuma-*
+
+      # temporary step. will build docker image with templates instead
+      - name: Push Templates
+        run: |
+          git config user.name "l5io"
+          git config user.email "ci@layer5.io"
+          git add ./templates
+          git commit -m "push latest OAM definitions and schemas"
+          git push origin gen-oam
