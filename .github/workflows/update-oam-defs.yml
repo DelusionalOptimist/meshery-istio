@@ -47,6 +47,8 @@ jobs:
 
             echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/$(printf %s_definition.json $name)
 
+            (( idx += 1 ))
+
           done
 
       - name: Cleanup
