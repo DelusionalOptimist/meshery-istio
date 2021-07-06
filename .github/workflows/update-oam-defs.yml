@@ -16,7 +16,7 @@ jobs:
 
       - name: Get Kuma manifests
         run: |
-          eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
+          eval $(curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 sh - | grep "PATH")
           istioctl manifest generate > ~/istio.yml
 
       - name: Bulild jsonschema util
