@@ -88,6 +88,7 @@ jobs:
           echo "CURRENT_ISTIO_VERSION=${{ steps.glrt.outputs.release }}" > .github/.env
 
       - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: ./templates ./.github
           commit_user_name: l5io
