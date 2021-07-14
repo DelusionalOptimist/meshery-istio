@@ -6,7 +6,6 @@ on:
 
 jobs:
   oam:
-    needs:
     name: Generate and push OAM definitions
     runs-on: ubuntu-latest
     steps:
