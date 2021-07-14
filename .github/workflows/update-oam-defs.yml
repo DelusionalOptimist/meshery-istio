@@ -31,7 +31,7 @@ jobs:
   generator:
     name: Generate and push OAM definitions
     needs: [ check_istio_version ]
-    if: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION  >  needs.check_istio_version.env.CURRENT_ISTIO_VERSION }}
+    if: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION  >  needs.check_istio_version.outputs.CURRENT_ISTIO_VERSION }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
