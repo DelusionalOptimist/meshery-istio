@@ -20,24 +20,16 @@ jobs:
         uses: actions/checkout@master
         with:
           fetch-depth: 1
+          #token: ${{ secrets.GH_ACCESS_TOKEN }}
+          token: ${{ secrets.PAT }}
 
-      - name: Set CURRENT_ISTIO_VERSION
+      - name: Get CURRENT_ISTIO_VERSION from .env
         run: |
           cat .github/.env >> $GITHUB_ENV
-
-      - name: Check Istio version
-        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
-        run: |
-          ISTIO_VERSION="$(curl -sL https://github.com/istio/istio/releases | \
-                         grep -o 'releases/[0-9]*.[0-9]*.[0-9]*/' | sort --version-sort | \
-                         tail -1 | awk -F'/' '{ print $2}')"
 
       - name: Get Istio manifests
         if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
-          ISTIO_VERSION="$(curl -sL https://github.com/istio/istio/releases | \
-                  grep -o 'releases/[0-9]*.[0-9]*.[0-9]*/' | sort --version-sort | \
-                  tail -1 | awk -F'/' '{ print $2}')"
           eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
           istioctl manifest generate > ~/istio.yml
 
@@ -69,9 +61,9 @@ jobs:
             name=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
             definitionRef=$name.meshery.layer5.io
 
-            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$ISTIO_VERSION'" | .title = '$t'' > $(printf %s.meshery.layer5io.schema.json $name) > ../templates/oam/workloads/$(printf %s.%s.meshery.layer5io.schema.json $name $ISTIO_VERSION)
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$ISTIO_VERSION'" | .title = '$t'' > ../templates/oam/workloads-$ISTIO_VERSION/$(printf %s.meshery.layer5io.schema.json $name)
 
-            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads/$(printf %s_definition.%s.json $name $ISTIO_VERSION)
+            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$ISTIO_VERSION/$(printf %s_definition.json $name)
 
           done
 
@@ -84,6 +76,16 @@ jobs:
         if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
           echo "CURRENT_ISTIO_VERSION=${{ steps.glrt.outputs.release }}" > .github/.env
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: ./templates ./.github
+          commit_user_name: l5io
+          commit_user_email: ci@layer5.io
+          commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit_options: '--signoff'
+          commit_message: "[Docs] Error Code Reference: update Meshery server and mehseryctl error codes"
 
       - name: Push Templates
         if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
