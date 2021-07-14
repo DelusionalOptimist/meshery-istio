@@ -14,9 +14,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Get Kuma manifests
+      - name: Get Istio manifests
         run: |
-          eval $(curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.9.1 sh - | grep "PATH")
+          ISTIO_VERSION="$(curl -sL https://github.com/istio/istio/releases | \
+                  grep -o 'releases/[0-9]*.[0-9]*.[0-9]*/' | sort --version-sort | \
+                  tail -1 | awk -F'/' '{ print $2}')"
+          eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
           istioctl manifest generate > ~/istio.yml
 
       - name: Bulild jsonschema util
@@ -43,11 +46,9 @@ jobs:
             name=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
             definitionRef=$name.meshery.layer5.io
 
-            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --kubernetes -o json --o-filter "$[$idx]" | jq '.[]' > ../templates/oam/$(printf %s.meshery.layer5io.schema.json $name)
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$ISTIO_VERSION'" | .title = "'$t'"' > $(printf %s.meshery.layer5io.schema.json $name) > ../templates/oam/workloads/$(printf %s.%s.meshery.layer5io.schema.json $name $ISTIO_VERSION)
 
-            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/$(printf %s_definition.json $name)
-
-            (( idx += 1 ))
+            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$ISTIO_VERSION/$(printf %s_definition.%s.json $name $ISTIO_VERSION)
 
           done
 
