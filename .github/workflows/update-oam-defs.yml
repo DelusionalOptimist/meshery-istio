@@ -32,6 +32,8 @@ jobs:
     name: Generate and push OAM definitions
     needs: [ check_istio_version ]
     if: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION  >  needs.check_istio_version.outputs.CURRENT_ISTIO_VERSION }}
+    env:
+      NEW_ISTIO_VERSION: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -59,10 +61,8 @@ jobs:
           make linux
 
       - name: Generate Workload definitions
-        env:
-          NEW_ISTIO_VERSION: ${{ steps.glrt.outputs.release }}
         run: |
-          mkdir ./templates/workloads-$NEW_ISTIO_VERSION
+          mkdir ./templates/oam/workloads-$NEW_ISTIO_VERSION
           cd util
           template='{"apiVersion":"core.oam.dev/v1alpha1","kind":"WorkloadDefinition","metadata":{"name":""},"spec":{"definitionRef":{"name":""}}}'
 
