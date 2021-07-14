@@ -90,6 +90,6 @@ jobs:
         run: |
           git config user.name "l5io"
           git config user.email "ci@layer5.io"
-          git add ./templates ./github
+          git add ./templates ./.github
           git commit -m "push latest OAM definitions and schemas"
           git push origin gen-oam
