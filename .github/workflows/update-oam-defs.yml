@@ -34,10 +34,9 @@ jobs:
 
   generator:
     name: Generate and push OAM definitions
-    if: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION > needs.check_istio_version.env.CURRENT_ISTIO_VERSION }}
+    if: ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION  >  needs.check_istio_version.env.CURRENT_ISTIO_VERSION }}
     runs-on: ubuntu-latest
     steps:
-
       - name: Check out code
         uses: actions/checkout@master
         with:
@@ -47,6 +46,7 @@ jobs:
 
       - name: Get Istio manifests
         run: |
+          echo ${{ needs.check_istio_version.outputs.NEW_ISTIO_VERSION }}  ${{ needs.check_istio_version.env.CURRENT_ISTIO_VERSION }}
           eval $(curl -L https://istio.io/downloadIstio | sh - | grep "PATH")
           istioctl manifest generate > ~/istio.yml
 
