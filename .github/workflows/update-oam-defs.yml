@@ -56,6 +56,7 @@ jobs:
 
       - name: Generate Workload definitions
         if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
+        env: ISTIO_VERSION=${{ steps.glrt.outputs.release }}
         run: |
           cd util
           template='{"apiVersion":"core.oam.dev/v1alpha1","kind":"WorkloadDefinition","metadata":{"name":""},"spec":{"definitionRef":{"name":""}}}'
@@ -88,6 +89,6 @@ jobs:
         run: |
           git config user.name "l5io"
           git config user.email "ci@layer5.io"
-          git add ./templates
+          git add ./templates ./github
           git commit -m "push latest OAM definitions and schemas"
           git push origin gen-oam
