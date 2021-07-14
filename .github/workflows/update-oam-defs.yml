@@ -6,15 +6,35 @@ on:
 
 jobs:
   oam:
+    needs:
     name: Generate and push OAM definitions
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest release tag
+        id: glrt
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: istio/istio
+          excludes: prerelease, draft
+
       - name: Check out code
         uses: actions/checkout@master
         with:
           fetch-depth: 1
 
+      - name: Set CURRENT_ISTIO_VERSION
+        run: |
+          cat .github/.env >> $GITHUB_ENV
+
+      - name: Check Istio version
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
+        run: |
+          ISTIO_VERSION="$(curl -sL https://github.com/istio/istio/releases | \
+                         grep -o 'releases/[0-9]*.[0-9]*.[0-9]*/' | sort --version-sort | \
+                         tail -1 | awk -F'/' '{ print $2}')"
+
       - name: Get Istio manifests
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
           ISTIO_VERSION="$(curl -sL https://github.com/istio/istio/releases | \
                   grep -o 'releases/[0-9]*.[0-9]*.[0-9]*/' | sort --version-sort | \
@@ -23,6 +43,7 @@ jobs:
           istioctl manifest generate > ~/istio.yml
 
       - name: Bulild jsonschema util
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
@@ -35,6 +56,7 @@ jobs:
           make linux
 
       - name: Generate Workload definitions
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
           cd util
           template='{"apiVersion":"core.oam.dev/v1alpha1","kind":"WorkloadDefinition","metadata":{"name":""},"spec":{"definitionRef":{"name":""}}}'
@@ -53,11 +75,17 @@ jobs:
           done
 
       - name: Cleanup
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
-          rm -rf util kuma-*
+          rm -rf util istio-*
 
-      # temporary step. will build docker image with templates instead
+      - name: Update Istio version env var
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
+        run: |
+          echo "CURRENT_ISTIO_VERSION=${{ steps.glrt.outputs.release }}" > .github/.env
+
       - name: Push Templates
+        if: ${{ steps.glrt.outputs.release > env.CURRENT_ISTIO_VERSION }}
         run: |
           git config user.name "l5io"
           git config user.email "ci@layer5.io"
