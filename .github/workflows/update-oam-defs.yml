@@ -2,7 +2,7 @@ name: Meshery-istio OAM
 on:
   push:
     branches:
-      - 'gen-oam'
+      - 'gen-oam2'
 
 jobs:
   check_istio_version:
@@ -85,7 +85,7 @@ jobs:
 
       - name: Update Istio version env var
         run: |
-          echo "CURRENT_ISTIO_VERSION=${{ steps.glrt.outputs.release }}" > .github/.env
+          echo "CURRENT_ISTIO_VERSION=$NEW_ISTIO_VERSION" > .github/.env
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
