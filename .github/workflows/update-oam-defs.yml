@@ -1,4 +1,4 @@
-name: Meshery-istio OAM
+name: Meshery Istio Pattern Components Generator
 on:
   push:
     branches:
@@ -40,8 +40,8 @@ jobs:
         uses: actions/checkout@master
         with:
           fetch-depth: 1
-          #token: ${{ secrets.GH_ACCESS_TOKEN }}
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          ref: 'gen-oam2'
 
       - name: Get Istio manifests
         run: |
@@ -73,9 +73,11 @@ jobs:
             name=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
             definitionRef=$name.meshery.layer5.io
 
-            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$NEW_ISTIO_VERSION'" | .title = '$t'' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s.meshery.layer5io.schema.json $name)
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | \
+                                                                                                                                                                                                    jq '.[] | .version = "'$NEW_ISTIO_VERSION'" | .title = '$t'' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s.meshery.layer5io.schema.json $name)
 
-            echo $template | jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s_definition.json $name)
+            echo $template | \
+            jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s_definition.json $name)
 
           done
 
@@ -83,7 +85,7 @@ jobs:
         run: |
           rm -rf util istio-*
 
-      - name: Update Istio version env var
+      - name: Update Istio version in .env
         run: |
           echo "CURRENT_ISTIO_VERSION=$NEW_ISTIO_VERSION" > .github/.env
 
@@ -95,5 +97,5 @@ jobs:
           commit_user_email: ci@layer5.io
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: '--signoff'
-          commit_message: "[Patterns] Generate latest JSON schemas and Pattern components"
+          commit_message: "[Patterns] Pattern components generated from latest Istio manifests"
           branch: gen-oam2
