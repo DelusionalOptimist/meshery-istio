@@ -72,7 +72,7 @@ jobs:
 
             nameUpper=`echo $t  | tr -d '"'`
             nameLower=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
-            definitionRef=$name.meshery.layer5.io
+            definitionRef=$(printf %sistio.meshery.layer5.io $nameLower)
 
             ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$NEW_ISTIO_VERSION'" | .title = "'$(printf %sistio $nameLower)'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %sistio.meshery.layer5io.schema.json $nameLower)
 
