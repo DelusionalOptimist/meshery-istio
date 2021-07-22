@@ -70,13 +70,13 @@ jobs:
 
           for t in ${crds[@]}; do
 
-            name=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
-            definitionRef=$name.meshery.layer5.io
+            nameUpper=`echo $t  | tr -d '"'`
+            nameLower=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
+            definitionRef=$(printf %sistio.meshery.layer5.io $nameLower)
 
-            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$NEW_ISTIO_VERSION'" | .title = '$t'' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s.meshery.layer5io.schema.json $name)
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq '.[] | .version = "'$NEW_ISTIO_VERSION'" | .title = "'$(printf %sistio $nameLower)'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %sistio.meshery.layer5io.schema.json $nameLower)
 
-            echo $template | \
-            jq ' ."metadata"."name" = '$t' | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %s_definition.json $name)
+            echo $template | jq ' ."metadata"."name" = "'$(printf %sISTIO $nameUpper)'" | ."spec"."definitionRef"."name"="'$definitionRef'"' > ../templates/oam/workloads-$NEW_ISTIO_VERSION/$(printf %sistio_definition.json $nameLower)
 
           done
 
