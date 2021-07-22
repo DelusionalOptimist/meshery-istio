@@ -1,0 +1,12 @@
+{
+  "apiVersion": "core.oam.dev/v1alpha1",
+  "kind": "WorkloadDefinition",
+  "metadata": {
+    "name": "ServiceEntryISTIO"
+  },
+  "spec": {
+    "definitionRef": {
+      "name": "serviceentryistio.meshery.layer5.io"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "apiVersion": "core.oam.dev/v1alpha1",
+  "kind": "WorkloadDefinition",
+  "metadata": {
+    "name": "SidecarISTIO"
+  },
+  "spec": {
+    "definitionRef": {
+      "name": "sidecaristio.meshery.layer5.io"
+    }
+  }
+}
