@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@master
         with:
           fetch-depth: 1
-          token: ${{ secrets.RELEASEDRAFTER_PAT }}
+          token: ${{ secrets.PAT }}
           ref: 'gen-oam2'
 
       - name: Get Istio manifests
