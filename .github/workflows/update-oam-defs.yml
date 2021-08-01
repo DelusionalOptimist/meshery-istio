@@ -2,7 +2,7 @@ name: Meshery Istio Pattern Components Generator
 on:
   push:
     branches:
-      - 'master'
+      - 'oam-gen-tests'
 
 jobs:
   check_istio_version:
