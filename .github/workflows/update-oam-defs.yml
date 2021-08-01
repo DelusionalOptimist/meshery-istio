@@ -81,6 +81,8 @@ jobs:
 
           crds=$(./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition")]' -o json --o-filter '$..["spec"]["names"]["kind"]' | jq '.[]')
 
+          echo $crds
+
           for t in ${crds[@]}; do
 
             nameUpper=`echo $t  | tr -d '"'`
