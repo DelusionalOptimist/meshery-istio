@@ -46,7 +46,6 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.PAT }}
-          ref: 'master'
 
       - name: Get Istio manifests
         run: |
@@ -81,8 +80,6 @@ jobs:
 
           crds=$(./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition")]' -o json --o-filter '$..["spec"]["names"]["kind"]' | jq '.[]')
 
-          echo $crds
-
           for t in ${crds[@]}; do
 
             nameUpper=`echo $t  | tr -d '"'`
@@ -94,6 +91,7 @@ jobs:
             echo $template | jq ' ."metadata"."name" = "'$(printf %sIstio $nameUpper)'" | ."spec"."definitionRef"."name"="'$definitionRef'" ' > $dirPath/$nameLower.istio_definition.json
 
           done
+          ls -R $dirPath
 
       - name: Cleanup
         run: |
