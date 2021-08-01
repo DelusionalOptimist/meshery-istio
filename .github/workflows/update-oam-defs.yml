@@ -67,6 +67,8 @@ jobs:
       - name: Generate Workload definitions
         run: |
           set -o errexit
+          set -o nounset
+          set -o pipefail
           dirPath=../templates/oam/workloads/workloads-$NEW_ISTIO_VERSION
           cd util
           mkdir -p $dirPath
