@@ -26,7 +26,7 @@ jobs:
 
       - name: Check if manifests for latest release exist
         run: |
-          if [ -d templates/oam/workloads-${{ steps.glrt.outputs.release }} ]
+          if [ -d templates/oam/workloads/workloads-${{ steps.glrt.outputs.release }} ]
           then
             echo "EXISTS=true" > $GITHUB_ENV
           else
@@ -66,13 +66,13 @@ jobs:
 
       - name: Generate Workload definitions
         run: |
-          mkdir ./templates/oam/workloads-$NEW_ISTIO_VERSION
+          dirName=templates/oam/workloads/workloads-$NEW_ISTIO_VERSION
+          mkdir ./$dirName
           cd util
 
           resourceType=CustomResourceDefinition
           meshName=Istio
           template='{"apiVersion":"core.oam.dev/v1alpha1","kind":"WorkloadDefinition","metadata":{},"spec":{"definitionRef":{},"metadata":{"@type":"pattern.meshery.io/mesh/workload","meshVersion":"'$NEW_ISTIO_VERSION'","meshName":"'$meshName'","k8sAPIVersion":null,"k8sKind":"'$resourceType'"}}}'
-          dirName=templates/oam/workloads-$NEW_ISTIO_VERSION
 
           crds=$(./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition")]' -o json --o-filter '$..["spec"]["names"]["kind"]' | jq '.[]')
 
