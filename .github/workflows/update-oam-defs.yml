@@ -67,7 +67,7 @@ jobs:
       - name: Generate Workload definitions
         run: |
           dirName=templates/oam/workloads/workloads-$NEW_ISTIO_VERSION
-          mkdir ./$dirName
+          mkdir -p ./$dirName
           cd util
 
           resourceType=CustomResourceDefinition
