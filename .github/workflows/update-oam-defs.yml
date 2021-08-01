@@ -68,8 +68,8 @@ jobs:
         run: |
           set -o errexit
           dirPath=../templates/oam/workloads/workloads-$NEW_ISTIO_VERSION
-          mkdir -p $dirPath
           cd util
+          mkdir -p $dirPath
 
           resourceType=CustomResourceDefinition
           meshName=Istio
