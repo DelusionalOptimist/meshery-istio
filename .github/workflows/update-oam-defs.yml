@@ -65,9 +65,6 @@ jobs:
 
       - name: Generate Workload definitions
         run: |
-          set -o errexit
-          set -o nounset
-          set -o pipefail
           dirPath=../templates/oam/workloads/workloads-$NEW_ISTIO_VERSION
           cd util
           mkdir -p $dirPath
@@ -86,12 +83,19 @@ jobs:
             nameLower=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
             definitionRef=$(printf %s.istio.meshery.layer5.io $nameLower)
 
-            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json | jq ' .[] | .version = "'$NEW_ISTIO_VERSION'" | ."object-type" = "'$nameUpper'" | ."service-mesh" = "'$meshName'" ' > $dirPath/$nameLower.istio.meshery.layer5io.schema.json
+            ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json |\
+            jq '
+            .[]
+            | .version = "'$NEW_ISTIO_VERSION'"
+            | ."object-type" = "'$nameUpper'"
+            | ."service-mesh" = "'$meshName'" ' > $dirPath/$nameLower.istio.meshery.layer5io.schema.json
 
-            echo $template | jq ' ."metadata"."name" = "'$(printf %sIstio $nameUpper)'" | ."spec"."definitionRef"."name"="'$definitionRef'" ' > $dirPath/$nameLower.istio_definition.json
+            echo $template |\
+            jq '
+            ."metadata"."name" = "'$(printf %sIstio $nameUpper)'"
+            | ."spec"."definitionRef"."name"="'$definitionRef'" ' > $dirPath/$nameLower.istio_definition.json
 
           done
-          ls -R $dirPath
 
       - name: Cleanup
         run: |
