@@ -83,6 +83,8 @@ jobs:
             nameLower=`echo $t  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
             definitionRef=$(printf %s.istio.meshery.layer5.io $nameLower)
 
+            apiVersion=$(./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..spec.versions[0]' --o-filter "$[]" -o json | jq '.[] | ."name"' | tr -d '"')
+
             ./kubeopenapi-jsonschema --location ~/istio.yml -t yaml --filter '$[?(@.kind=="CustomResourceDefinition" && @.spec.names.kind=='$t')]..openAPIV3Schema.properties.spec' --o-filter "$[]" -o json |\
             jq '
             .[]
@@ -93,6 +95,8 @@ jobs:
             echo $template |\
             jq '
             ."metadata"."name" = "'$(printf %sIstio $nameUpper)'"
+            | ."spec"."metadata"."k8sAPIVersion" = "'$apiVersion'"
+            | ."spec"."metadata"."k8sKind" = "'$nameUpper'"
             | ."spec"."definitionRef"."name"="'$definitionRef'" ' > $dirPath/$nameLower.istio_definition.json
 
           done
