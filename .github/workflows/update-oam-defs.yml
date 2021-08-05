@@ -94,7 +94,7 @@ jobs:
 
             echo $template |\
             jq '
-            ."metadata"."name" = "'$(printf %sIstio $nameUpper)'"
+            ."metadata"."name" = "'$(printf %s.Istio $nameUpper)'"
             | ."spec"."metadata"."k8sAPIVersion" = "'$apiVersion'"
             | ."spec"."metadata"."k8sKind" = "'$nameUpper'"
             | ."spec"."definitionRef"."name"="'$definitionRef'" ' > $dirPath/$nameLower.istio_definition.json
