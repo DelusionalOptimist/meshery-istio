@@ -5,6 +5,11 @@ on:
       - 'master'
     paths:
       - '**.go'
+  workflow_dispatch:
+    inputs:
+      number:
+        description: "something"
+        required: false
 
 jobs:
   Update-error-codes:
