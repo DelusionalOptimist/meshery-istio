@@ -122,6 +122,10 @@ var (
 	// ErrMakingBinExecutableCode implies error while makng istioctl executable
 	ErrMakingBinExecutableCode = "1031"
 
+	ErrSadLifeCode = "replace"
+	
+	ErrSadLife = errors.New(ErrSadLifeCode, errors.Alert, []string{"Invalid operation"}, []string{"Istio adapter recived an invalid operation from the meshey server"}, []string{"The operation is not supported by the adapter", "Invalid operation name"}, []string{"Check if the operation name is valid and supported by the adapter"})
+
 	// ErrOpInvalid represents the errors which are generated
 	// when an invalid operation is requested
 	ErrOpInvalid = errors.New(ErrOpInvalidCode, errors.Alert, []string{"Invalid operation"}, []string{"Istio adapter recived an invalid operation from the meshey server"}, []string{"The operation is not supported by the adapter", "Invalid operation name"}, []string{"Check if the operation name is valid and supported by the adapter"})
