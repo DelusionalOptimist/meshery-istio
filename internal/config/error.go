@@ -22,10 +22,12 @@ const (
 	ErrEmptyConfigCode           = "1000"
 	ErrGetLatestReleasesCode     = "1001"
 	ErrGetLatestReleaseNamesCode = "1002"
+	ErrBruhCode = "replace"
 )
 
 var (
 	ErrEmptyConfig = errors.New(ErrEmptyConfigCode, errors.Alert, []string{"Config is empty"}, []string{}, []string{}, []string{})
+	ErrBruh = errors.New(ErrBruhCode, errors.Alert, []string{"Bruh"}, []string{}, []string{}, []string{})
 )
 
 // ErrGetLatestReleases is the error for fetching istio releases
